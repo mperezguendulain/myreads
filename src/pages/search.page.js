@@ -1,24 +1,68 @@
-const SearchPage = ({onReturnPage}) => {
+import { useEffect, useState } from 'react';
+
+import SearchBook from '../components/SearchBook';
+import Book from '../components/Book';
+import * as BooksAPI from '../services/BooksAPI';
+
+const SearchPage = ({ onReturnPage }) => {
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredBooks, setFilteredBooks] = useState([]);
+
+  useEffect(() => {
+    if (searchTerm === '') {
+      setFilteredBooks([]);
+      return;
+    }
+
+    BooksAPI.search(searchTerm)
+      .then(books => {
+        if (!Array.isArray(books)) {
+          books = [];
+        }
+        console.log(books)
+        setFilteredBooks(books);
+      })
+  }, [searchTerm])
+
+  const changeSearchTerm = (newSearchTerm) => {
+
+    setSearchTerm(newSearchTerm);
+
+  }
+
+
 
   return (
     <div className="search-books">
-      <div className="search-books-bar">
-        <button className="close-search" onClick={onReturnPage}>Close</button>
-        <div className="search-books-input-wrapper">
-          {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-          <input type="text" placeholder="Search by title or author" />
-
-        </div>
-      </div>
+      <SearchBook
+        onReturnPage={onReturnPage}
+        searchTerm={searchTerm}
+        onSearchTermChange={changeSearchTerm}
+      />
       <div className="search-books-results">
-        <ol className="books-grid"></ol>
+        {
+          filteredBooks.length > 0
+            ? (
+              <ol className="books-grid">
+                {filteredBooks.map(book => (
+                  <li key={book.id}>
+                    <Book
+                      id={book.id}
+                      title={book.title}
+                      authors={book.authors}
+                      imageLinks={book.imageLinks}
+                      shelf={book.shelf}
+                    />
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <div className="not-books-container">
+                <span className="not-books-label">Not books</span>
+              </div>
+            )
+        }
       </div>
     </div>
   );

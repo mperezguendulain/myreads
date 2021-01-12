@@ -2,7 +2,6 @@ import React from 'react'
 
 import SearchPage from "./pages/search.page";
 import BooksPage from './pages/books.page';
-// import * as BooksAPI from './BooksAPI'
 
 import './App.css'
 

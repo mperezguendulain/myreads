@@ -196,3 +196,13 @@ button:active {
   text-align: center;
   font-size: 0.8em;
 }
+
+.not-books-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0px 20px 0px;
+}
+
+.not-books-label {
+  font-size: 1.25em;
+}
