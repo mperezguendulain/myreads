@@ -1,69 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useCallback } from 'react';
+import { useHistory } from "react-router-dom";
 
-import SearchBook from '../components/SearchBook';
-import Book from '../components/Book';
-import * as BooksAPI from '../services/BooksAPI';
+import useQuery from '../hooks/useQuery';
 
-const SearchPage = ({ onReturnPage }) => {
-
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredBooks, setFilteredBooks] = useState([]);
-
-  useEffect(() => {
-    if (searchTerm === '') {
-      setFilteredBooks([]);
-      return;
-    }
-
-    BooksAPI.search(searchTerm)
-      .then(books => {
-        if (!Array.isArray(books)) {
-          books = [];
-        }
-        console.log(books)
-        setFilteredBooks(books);
-      })
-  }, [searchTerm])
-
-  const changeSearchTerm = (newSearchTerm) => {
-
-    setSearchTerm(newSearchTerm);
-
-  }
+import SearchBookInput from '../components/SearchBookInput';
+import BooksSearchResult from '../components/BooksSearchResult'
 
 
+const SearchPage = () => {
+
+  const history = useHistory();
+  const queryParams = useQuery();
+
+  const changeSearchTerm = useCallback((newSearchTerm) => {
+
+    history.push(`/search?searchTerm=${newSearchTerm}`);
+
+  }, [history]);
 
   return (
     <div className="search-books">
-      <SearchBook
-        onReturnPage={onReturnPage}
-        searchTerm={searchTerm}
+      <SearchBookInput
+        searchTerm={queryParams.get('searchTerm')}
         onSearchTermChange={changeSearchTerm}
       />
-      <div className="search-books-results">
-        {
-          filteredBooks.length > 0
-            ? (
-              <ol className="books-grid">
-                {filteredBooks.map(book => (
-                  <li key={book.id}>
-                    <Book
-                      id={book.id}
-                      title={book.title}
-                      authors={book.authors}
-                      imageLinks={book.imageLinks}
-                      shelf={book.shelf}
-                    />
-                  </li>
-                ))}
-              </ol>
-            ) : (
-              <div className="not-books-container">
-                <span className="not-books-label">Not books</span>
-              </div>
-            )
-        }
-      </div>
+      <BooksSearchResult
+        searchTerm={queryParams.get('searchTerm')}/>
     </div>
   );
 

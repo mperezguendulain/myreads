@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Bookshelf from '../components/Bookshelf';
 
 import * as BooksAPI from '../services/BooksAPI'
@@ -12,6 +13,7 @@ const BooksPage = ({onShowSearchPage}) => {
   useEffect(() => {
     BooksAPI.getAll()
       .then(books => {
+        console.log(books)
         const currentlyReading = [];
         const wantToRead = [];
         const read = [];
@@ -35,7 +37,7 @@ const BooksPage = ({onShowSearchPage}) => {
         setWantToReadBooks(wantToRead);
         setReadBooks(read);
       });
-  }, [])
+  }, []);
 
   return (
     <div className="list-books">
@@ -50,7 +52,7 @@ const BooksPage = ({onShowSearchPage}) => {
         </div>
       </div>
       <div className="open-search">
-        <button onClick={onShowSearchPage}>Add a book</button>
+        <Link to="/search?searchTerm=">Add a book</Link>
       </div>
     </div>
   );

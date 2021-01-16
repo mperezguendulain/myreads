@@ -1,17 +1,23 @@
 import PropTypes from 'prop-types';
 
-const BookshelfChanger = ({shelf}) => {
+const BookshelfChanger = ({shelf, onChangeShelf}) => {
 
   const shelfOptions = [
     {value: 'currentlyReading', text: 'Currently Reading'},
     {value: 'wantToRead', text: 'Want to Read'},
     {value: 'read', text: 'Read'},
     {value: 'none', text: 'None'},
-  ]
+  ];
+
+  const changeShelf = (event) => {
+
+    onChangeShelf(event.target.value);
+
+  };
 
   return (
     <div className="book-shelf-changer">
-      <select defaultValue={shelf}>
+      <select defaultValue={shelf} onChange={changeShelf}>
         <option value="move" disabled>Move to...</option>
         {shelfOptions.map(
           (shelfOption, index) => (
@@ -29,7 +35,8 @@ const BookshelfChanger = ({shelf}) => {
 };
 
 BookshelfChanger.propTypes = {
-  shelf: PropTypes.string
+  shelf: PropTypes.string,
+  onChangeShelf: PropTypes.func.isRequired
 };
 
 BookshelfChanger.defaultProps = {
