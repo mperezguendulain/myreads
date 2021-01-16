@@ -19,7 +19,7 @@ const Book = ({
 
     BooksAPI.update(id, newShelf)
       .then(
-        data => onChangeShelf(id, newShelf)
+        data => onChangeShelf && onChangeShelf(id, newShelf)
       );
 
   };
@@ -44,7 +44,7 @@ Book.propTypes = {
     thumbnail: PropTypes.string
   }),
   shelf: PropTypes.string,
-  onChangeShelf: PropTypes.func.isRequired,
+  onChangeShelf: PropTypes.func,
 };
 
 export default Book;

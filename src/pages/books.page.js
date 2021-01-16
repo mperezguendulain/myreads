@@ -25,19 +25,20 @@ const BooksPage = ({onShowSearchPage}) => {
   useEffect(() => {
 
     BooksAPI.getAll()
-      .then(books => {
-        console.log(books)
-        const newShelfs = {
-          currentlyReading: [],
-          wantToRead: [],
-          read: [],
-          none: []
-        };
-        for (let i = 0; i < books.length; i++) {
-          newShelfs[books[i].shelf].push(books[i]);
+      .then(
+        books => {
+          const newShelfs = {
+            currentlyReading: [],
+            wantToRead: [],
+            read: [],
+            none: []
+          };
+          for (let i = 0; i < books.length; i++) {
+            newShelfs[books[i].shelf].push(books[i]);
+          }
+          setShelfBooks(newShelfs);
         }
-        setShelfBooks(newShelfs);
-      });
+      );
 
   }, []);
 

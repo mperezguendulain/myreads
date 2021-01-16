@@ -18,16 +18,23 @@ const BooksSearchResult = ({ searchTerm }) => {
       return;
     }
 
-    BooksAPI.search(searchTerm)
-      .then(books => {
+    Promise.all([
+      BooksAPI.getAll(),
+      BooksAPI.search(searchTerm)
+    ]).then(([userBooks, books]) => {
         if (!Array.isArray(books)) {
           books = [];
         }
-        console.log(books)
         setLoading(false);
+
+        for (let i = 0; i < books.length; i++) {
+          const userBook = userBooks.find(book => book.id === books[i].id)
+          books[i].shelf = userBook ? userBook.shelf : 'none';
+        }
+
         setFilteredBooks(books);
       })
-  }, [searchTerm])
+  }, [searchTerm]);
 
   return (
     <div className="search-books-results">
