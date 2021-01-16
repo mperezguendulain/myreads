@@ -6,37 +6,39 @@ import * as BooksAPI from '../services/BooksAPI'
 
 const BooksPage = ({onShowSearchPage}) => {
 
-  const [currentlyReadingBooks, setCurrentlyReadingBooks] = useState([]);
-  const [wantToReadBooks, setWantToReadBooks] = useState([]);
-  const [readBooks, setReadBooks] = useState([]);
+  const [shelfs, setShelfBooks] = useState({
+    currentlyReading: [],
+    wantToRead: [],
+    read: []
+  });
+
+  const changeShelf = (prevShelf, newShelf, bookToMove) => {
+    setShelfBooks(prevShelfBooks => {
+        return {
+          ...prevShelfBooks,
+          [prevShelf]: prevShelfBooks[prevShelf].filter(book => book.id !== bookToMove.id),
+          [newShelf]: [...prevShelfBooks[newShelf], bookToMove]
+        };
+    });
+  };
 
   useEffect(() => {
+
     BooksAPI.getAll()
       .then(books => {
         console.log(books)
-        const currentlyReading = [];
-        const wantToRead = [];
-        const read = [];
+        const newShelfs = {
+          currentlyReading: [],
+          wantToRead: [],
+          read: [],
+          none: []
+        };
         for (let i = 0; i < books.length; i++) {
-          switch (books[i].shelf) {
-            case 'currentlyReading':
-              currentlyReading.push(books[i]);
-              break;
-            case 'wantToRead':
-              wantToRead.push(books[i]);
-              break;
-            case 'read':
-              read.push(books[i]);
-              break;
-            default:
-              break;
-          }
+          newShelfs[books[i].shelf].push(books[i]);
         }
-
-        setCurrentlyReadingBooks(currentlyReading);
-        setWantToReadBooks(wantToRead);
-        setReadBooks(read);
+        setShelfBooks(newShelfs);
       });
+
   }, []);
 
   return (
@@ -46,9 +48,24 @@ const BooksPage = ({onShowSearchPage}) => {
       </div>
       <div className="list-books-content">
         <div>
-          <Bookshelf shelfName="Currently Reading" books={currentlyReadingBooks}/>
-          <Bookshelf shelfName="Want To Read" books={wantToReadBooks}/>
-          <Bookshelf shelfName="Read" books={readBooks}/>
+          <Bookshelf
+            shelfTitle="Currently Reading"
+            shelfName="currentlyReading"
+            books={shelfs.currentlyReading}
+            onChangeShelf={changeShelf}
+            />
+          <Bookshelf
+            shelfTitle="Want To Read"
+            shelfName="wantToRead"
+            books={shelfs.wantToRead}
+            onChangeShelf={changeShelf}
+            />
+          <Bookshelf
+            shelfTitle="Read"
+            shelfName="read"
+            books={shelfs.read}
+            onChangeShelf={changeShelf}
+            />
         </div>
       </div>
       <div className="open-search">

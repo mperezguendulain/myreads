@@ -11,13 +11,16 @@ const Book = ({
   title,
   authors,
   imageLinks,
-  shelf
+  shelf,
+  onChangeShelf
 }) => {
 
   const changeShelf = newShelf => {
 
     BooksAPI.update(id, newShelf)
-      .then();
+      .then(
+        data => onChangeShelf(id, newShelf)
+      );
 
   };
 
@@ -40,7 +43,8 @@ Book.propTypes = {
   imageLinks: PropTypes.shape({
     thumbnail: PropTypes.string
   }),
-  shelf: PropTypes.string
+  shelf: PropTypes.string,
+  onChangeShelf: PropTypes.func.isRequired,
 };
 
 export default Book;
