@@ -1,18 +1,19 @@
-import { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Bookshelf from '../components/Bookshelf';
 
 import * as BooksAPI from '../services/BooksAPI'
 
-const BooksPage = ({onShowSearchPage}) => {
+const BooksPage = () => {
 
   const [shelfs, setShelfBooks] = useState({
     currentlyReading: [],
     wantToRead: [],
-    read: []
+    read: [],
+    none: []
   });
 
-  const changeShelf = (prevShelf, newShelf, bookToMove) => {
+  const changeShelf = useCallback((prevShelf, newShelf, bookToMove) => {
     setShelfBooks(prevShelfBooks => {
         return {
           ...prevShelfBooks,
@@ -20,7 +21,7 @@ const BooksPage = ({onShowSearchPage}) => {
           [newShelf]: [...prevShelfBooks[newShelf], bookToMove]
         };
     });
-  };
+  }, []);
 
   useEffect(() => {
 
@@ -77,4 +78,4 @@ const BooksPage = ({onShowSearchPage}) => {
 
 };
 
-export default BooksPage;
+export default React.memo(BooksPage);

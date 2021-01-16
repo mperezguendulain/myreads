@@ -1,3 +1,4 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const BookCover = ({bookCoverURL}) => {
@@ -23,4 +24,4 @@ BookCover.defaultProps = {
   bookCoverURL: 'https://images-na.ssl-images-amazon.com/images/I/31M3X330W1L._SX295_BO1,204,203,200_.jpg'
 }
 
-export default BookCover;
+export default React.memo(BookCover);

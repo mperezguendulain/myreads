@@ -1,3 +1,4 @@
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import * as BooksAPI from '../../services/BooksAPI';
@@ -15,14 +16,14 @@ const Book = ({
   onChangeShelf
 }) => {
 
-  const changeShelf = newShelf => {
+  const changeShelf = useCallback(newShelf => {
 
     BooksAPI.update(id, newShelf)
       .then(
         data => onChangeShelf && onChangeShelf(id, newShelf)
       );
 
-  };
+  }, [onChangeShelf, id]);
 
   return (
     <div className="book">
@@ -47,4 +48,4 @@ Book.propTypes = {
   onChangeShelf: PropTypes.func,
 };
 
-export default Book;
+export default React.memo(Book);

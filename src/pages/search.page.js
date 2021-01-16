@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useHistory } from "react-router-dom";
 
 import useQuery from '../hooks/useQuery';
@@ -31,4 +31,4 @@ const SearchPage = () => {
 
 };
 
-export default SearchPage;
+export default React.memo(SearchPage);

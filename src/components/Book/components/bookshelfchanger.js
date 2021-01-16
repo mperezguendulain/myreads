@@ -1,3 +1,4 @@
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 const BookshelfChanger = ({shelf, onChangeShelf}) => {
@@ -9,11 +10,11 @@ const BookshelfChanger = ({shelf, onChangeShelf}) => {
     {value: 'none', text: 'None'},
   ];
 
-  const changeShelf = (event) => {
+  const changeShelf = useCallback(event => {
 
     onChangeShelf(event.target.value);
 
-  };
+  }, [onChangeShelf]);
 
   return (
     <div className="book-shelf-changer">
@@ -43,4 +44,4 @@ BookshelfChanger.defaultProps = {
   shelf: 'none'
 };
 
-export default BookshelfChanger;
+export default React.memo(BookshelfChanger);

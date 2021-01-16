@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 import Book from '../Book';
 
@@ -76,4 +76,4 @@ BooksSearchResult.propTypes = {
   searchTerm: PropTypes.string.isRequired
 };
 
-export default BooksSearchResult;
+export default React.memo(BooksSearchResult);

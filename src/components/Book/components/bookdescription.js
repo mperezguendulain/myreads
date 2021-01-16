@@ -1,3 +1,4 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const BookDescription = ({
@@ -23,4 +24,4 @@ BookDescription.defaultProps = {
   authors: []
 }
 
-export default BookDescription;
+export default React.memo(BookDescription);

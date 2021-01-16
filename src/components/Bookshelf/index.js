@@ -1,3 +1,4 @@
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import Book from '../Book';
@@ -9,11 +10,13 @@ const Bookshelf = ({
   onChangeShelf
 }) => {
 
-  const changeBookOfShelf = (bookId, newShelf) => {
+  const changeBookOfShelf = useCallback((bookId, newShelf) => {
+
     const bookToMove = books.find(book => book.id === bookId);
     bookToMove.shelf = newShelf;
     onChangeShelf(shelfName, newShelf, bookToMove)
-  };
+
+  }, [onChangeShelf, books, shelfName]);
 
   return (
     <div className="bookshelf">
@@ -56,4 +59,4 @@ Bookshelf.propTypes = {
   ).isRequired,
 };
 
-export default Bookshelf;
+export default React.memo(Bookshelf);

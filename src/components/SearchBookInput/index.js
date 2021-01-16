@@ -1,5 +1,5 @@
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as rxjs from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -14,13 +14,13 @@ const SearchBookInput = ({
   const queryParams = useQuery();
   const [searchTerm, setSearchTerm] = useState(queryParams.get('searchTerm'));
 
-  const updateLocalSearchTerm = useCallback((event) => {
+  const updateLocalSearchTerm = useCallback(event => {
 
     const localSearchTerm = event.target.value;
     setSearchTerm(localSearchTerm);
     inputSubscription.next(localSearchTerm);
 
-  }, [inputSubscription, setSearchTerm]);
+  }, [inputSubscription]);
 
   useEffect(() => {
 
@@ -54,4 +54,4 @@ SearchBookInput.propTypes = {
   onSearchTermChange: PropTypes.func.isRequired
 };
 
-export default SearchBookInput;
+export default React.memo(SearchBookInput);
